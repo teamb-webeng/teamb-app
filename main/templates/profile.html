@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="user-info">
+    <div class="user-info-header">ユーザー情報</div>
+    <div class="user-info-body">
+        <table>
+            <tr>
+                <td>ID</td>
+                <td>{{ target_user.id }}</td>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>{{ target_user.username }}</td>
+            </tr>
+            <tr>
+                <td>email</td>
+                <td>{{ target_user.email }}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="user-info-footer">
+        <a href={{"edit/{}".format(target_user.id)}}>変更する</a>
+
+        <form class="" action={{"/user/delete/{}".format(target_user.id)}} method="post" onClick="return confirm('削除します。\nよろしいですか？');">
+          <input type="submit" name="" value="ユーザーを削除する">
+        </form>
+    </div>
+
+</div>
+
+{% endblock %}

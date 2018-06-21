@@ -1,0 +1,25 @@
+<html>
+    <head>
+        <title>teamb-app</title>
+        <link rel="stylesheet" href="/static/app.css">
+        <script type="text/javascript" src="/static/app.js"></script>
+    </head>
+    <body>
+        <header>
+            <a href={{"/mypage/{}".format(g.user.id)}}>ホーム</a>
+            <a href={{"/profile/{}".format(g.user.id)}}>プロフィール</a>
+            <a href="/logout" onClick="return confirm('ログアウトします。\nよろしいですか？');">ログアウト</a>
+            <div role="document" style="padding-top: 70px;">
+                {% with messages = get_flashed_messages() %}<!-- メッセージ種類によってフィルターもかけられる -->
+                    {% if messages %}
+                        {{messages[-1]}}
+                    {% endif %}
+                {% endwith %}
+            </div>
+
+        </header>
+        {% block content %}
+        <!-- ここにメインコンテンツを書く -->
+        {% endblock %}
+    </body>
+</html>

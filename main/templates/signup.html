@@ -1,0 +1,14 @@
+<div class="create_user">
+    <p>ユーザー新規登録欄</p>
+    <form class="" action="{{ url_for('signup') }}" method="post">
+        <label for="username">Name:</label>
+        <input type="text" size="30" name="username">
+        <br>
+        <label for="email">email:</label>
+        <input type="text" size="30" name="email">
+        <br>
+        <label for="password">password:</label>
+        <input type="password" size="30" name="password">
+        <input type="submit">
+    </form>
+</div>
