@@ -3,4 +3,10 @@
 
 hello {{target_user.username}}!
 <p>(ここにファイルをアップロードして問題セットを作成して表示する)</p>
+
+<form method="post" action="{{url_for("mypage",user_id=target_user.id)}}" enctype="multipart/form-data">
+  <input type="file" id="text_file" name="text_file">
+  <input type="submit" value="送信" class="btn">
+</form>
+
 {% endblock %}
