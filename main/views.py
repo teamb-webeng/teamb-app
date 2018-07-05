@@ -3,6 +3,15 @@ from flask import render_template, request, url_for
 from main.models import User
 from main import db, app
 from functools import wraps
+from werkzeug import secure_filename
+import os
+UPLOAD_FOLDER = 'main/uploads'
+ALLOWED_EXTENSIONS = set(['txt'])
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 def login_required(f):  # デコレーターを定義。fはデコレートされるメソッド
@@ -46,12 +55,27 @@ def signup():
     return render_template("signup.html")
 
 
-@app.route("/mypage/<int:user_id>")
+@app.route("/mypage/<int:user_id>", methods=['GET', 'POST'])
 @login_required
 def mypage(user_id):
-    login_user_check(user_id)
-    target_user = User.query.get(user_id)  # primary keyでなら検索できる
-    return render_template("mypage.html", target_user=target_user)
+    if request.method == "GET":
+        login_user_check(user_id)
+        target_user = User.query.get(user_id)  # primary keyでなら検索できる
+        return render_template("mypage.html", target_user=target_user)
+    else:
+        text_file = request.files['text_file']
+        if text_file and allowed_file(text_file.filename):
+            filename = secure_filename(text_file.filename)
+            text_file.save(os.path.join(UPLOAD_FOLDER, filename))
+            return redirect(url_for("result"))
+        else:
+            return redirect(url_for("mypage", user_id=user_id))
+
+
+@app.route("/result")
+@login_required
+def result():
+    return render_template("result.html")
 
 
 @app.route("/profile/<int:user_id>")
