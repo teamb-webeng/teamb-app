@@ -5,6 +5,7 @@ from main import db, app
 from functools import wraps
 from werkzeug import secure_filename
 import os
+from main.utils import q_blank
 UPLOAD_FOLDER = 'main/uploads'
 ALLOWED_EXTENSIONS = set(['txt'])
 
@@ -67,15 +68,20 @@ def mypage(user_id):
         if text_file and allowed_file(text_file.filename):
             filename = secure_filename(text_file.filename)
             text_file.save(os.path.join(UPLOAD_FOLDER, filename))
-            return redirect(url_for("result"))
+            return redirect(url_for("result", filename=filename, kind="blank"))
         else:
             return redirect(url_for("mypage", user_id=user_id))
 
 
-@app.route("/result")
+@app.route("/result/<string:filename>/<string:kind>")
 @login_required
-def result():
-    return render_template("result.html")
+def result(filename, kind):
+    if kind == "blank":
+        filename = os.path.join(UPLOAD_FOLDER, filename)
+        qanda_list = q_blank.q_blank(filename, 5)  # 5問空欄問題を生成
+        return render_template("result_blank.html", qanda_list=qanda_list)
+    else:
+        return redirect("logout")  # 変な時はログアウトさせる
 
 
 @app.route("/profile/<int:user_id>")
