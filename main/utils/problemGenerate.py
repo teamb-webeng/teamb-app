@@ -1,12 +1,14 @@
 import numpy as np
 import random
 
-article_list = np.load('article_list')
-words_theme = np.load('words_theme')
+article_list = np.load('main/uploads/article_list')
+words_theme = np.load('main/uploads/words_theme')
 
 '''
 To generate a problem, letting word at word_index to become a blank
 '''
+
+
 def generateProblem(word_index, words, themes):
     # First, save the answer word
     ans = words[word_index]
@@ -31,11 +33,11 @@ def generateProblem(word_index, words, themes):
                     flag = 1
 
     question = words[word_index]
-    for i in range(word_index+1, L):
+    for i in range(word_index + 1, L):
         question += words[i]
         if words[i] == '。':
             break
-    for i in range(1, word_index+1):
+    for i in range(1, word_index + 1):
         if words[word_index - i] == '。':
             break
         question = words[word_index - i] + question
@@ -53,4 +55,6 @@ def genMultiProblems(multiIndex, words, themes):
 
 if __name__ == '__main__':
     print(generateProblem(110, article_list, words_theme))
-    print(genMultiProblems([110, 26, 200], article_list, words_theme))
+    print(len(article_list))
+
+    print(genMultiProblems([110, 122780, 26, 200], article_list, words_theme))

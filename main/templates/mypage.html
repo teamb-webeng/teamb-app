@@ -2,11 +2,16 @@
 {% block content %}
 
 hello {{target_user.username}}!
-<p>(ここにファイルをアップロードして問題セットを作成して表示する)</p>
 
 <form method="post" action="{{url_for("mypage",user_id=target_user.id)}}" enctype="multipart/form-data">
-  <input type="file" id="text_file" name="text_file">
-  <input type="submit" value="送信" class="btn">
+    問題形式選択:
+    <p>
+    <input type="radio" name="options" id="option1" value="blank" checked="checked"> 穴埋め自由回答形式 <br>
+    <input type="radio" name="options" id="option2" value="blank_choices"> 穴埋め選択回答形式 <br>
+    </p>
+    問題数:<input type="number" name="q_num" min=1 max=10 value=3><br>
+    問題を作成したいテキストをアップロード: <input type="file" id="text_file" name="text_file">
+    <input type="submit" value="送信" class="btn">
 </form>
 
 {% endblock %}

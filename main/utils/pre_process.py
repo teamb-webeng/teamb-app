@@ -25,8 +25,8 @@ def pre_processing(filename):
     # return words*probability(for every theme)
     result = model.fit_transform(tf)
     result_ = np.argmax(result, axis=1)  # label all words with the label
-    np.array(op).dump('uploads/article_list')  # save article
-    np.array(result_).dump('uploads/words_theme')  # save theme
+    np.array(op).dump('main/uploads/article_list')  # save article
+    np.array(result_).dump('main/uploads/words_theme')  # save theme
 
 
 if __name__ == "__main__":

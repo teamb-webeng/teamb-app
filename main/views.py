@@ -5,9 +5,12 @@ from main import db, app
 from functools import wraps
 from werkzeug import secure_filename
 import os
-from main.utils import q_blank
+from main.utils import q_blank, problemGenerate, pre_process
+import random
+import numpy as np
 UPLOAD_FOLDER = 'main/uploads'
 ALLOWED_EXTENSIONS = set(['txt'])
+Q_kinds = ["blank", "blank_choices"]
 
 
 def allowed_file(filename):
@@ -64,24 +67,40 @@ def mypage(user_id):
         target_user = User.query.get(user_id)  # primary keyでなら検索できる
         return render_template("mypage.html", target_user=target_user)
     else:
-        text_file = request.files['text_file']
-        if text_file and allowed_file(text_file.filename):
-            filename = secure_filename(text_file.filename)
-            text_file.save(os.path.join(UPLOAD_FOLDER, filename))
-            return redirect(url_for("result", filename=filename, kind="blank"))
+        kind = request.form['options']
+        q_num = request.form["q_num"]
+        if kind in Q_kinds:
+            text_file = request.files['text_file']
+            if text_file and allowed_file(text_file.filename):
+                filename = secure_filename(text_file.filename)
+                text_file.save(os.path.join(UPLOAD_FOLDER, filename))
+                return redirect(url_for("result", filename=filename, kind=kind, q_num=q_num))
+            else:
+                return redirect(url_for("mypage", user_id=user_id))
         else:
-            return redirect(url_for("mypage", user_id=user_id))
+            return redirect("logout")  # 問題形式が変な場合はログアウトさせる
 
 
-@app.route("/result/<string:filename>/<string:kind>")
+@app.route("/result/<string:filename>/<string:kind>/<int:q_num>")
 @login_required
-def result(filename, kind):
-    if kind == "blank":
+def result(filename, kind, q_num):
+    if kind == "blank":  # 空欄自由回答形式
         filename = os.path.join(UPLOAD_FOLDER, filename)
-        qanda_list = q_blank.q_blank(filename, 5)  # 5問空欄問題を生成
+        qanda_list = q_blank.q_blank(filename, q_num)
         return render_template("result_blank.html", qanda_list=qanda_list)
+    elif kind == "blank_choices":  # 空欄選択形式
+        filename = os.path.join(UPLOAD_FOLDER, filename)
+        pre_process.pre_processing(filename)
+        article_list = np.load('main/uploads/article_list')
+        words_theme = np.load('main/uploads/words_theme')
+
+        answer_words_idx_list = random.sample(
+            list(range(len(article_list))), q_num)
+        qanda_list = problemGenerate.genMultiProblems(
+            answer_words_idx_list, article_list, words_theme)
+        return render_template("result_blank_choices.html", qanda_list=qanda_list)
     else:
-        return redirect("logout")  # 変な時はログアウトさせる
+        return redirect("logout")  # 問題形式が変な場合はログアウトさせる
 
 
 @app.route("/profile/<int:user_id>")
