@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="result_blank">
+    {% for qanda in qanda_list %}
+          <p>問題: {{qanda.question}}</p>
+          選択肢:
+          <ol>
+              {% for choice in qanda.choices %}
+                <li>{{choice}}</li>
+              {% endfor %}
+          </ol>
+          <p>正解: {{qanda.choices[qanda.answer]}}</p>
+    {% endfor %}
+</div>
+{% endblock %}
