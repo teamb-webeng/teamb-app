@@ -3,8 +3,8 @@ import random
 import os
 
 # manage.pyならこっち
-# article_list = np.load('main/uploads/article_list'))
-# words_theme = np.load('main/uploads/words_theme'))
+# article_list = np.load('main/uploads/article_list')
+# words_theme = np.load('main/uploads/words_theme')
 
 article_list = np.load(os.path.join('./uploads/article_list'))
 words_theme = np.load(os.path.join('./uploads/words_theme'))

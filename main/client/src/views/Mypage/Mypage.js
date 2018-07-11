@@ -69,7 +69,7 @@ class Mypage extends Component {
               name: file.name,
             },
           }).done(() => {
-            console.log('save successful');
+            console.log('submit successful');
             resolve()
           });
         }
