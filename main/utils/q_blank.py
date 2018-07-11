@@ -79,5 +79,5 @@ def print_questions(q_dict, q_num):
 
 # プログラムが動くか確認する。sample.txtから問題を10問作る。
 if __name__ == "__main__":
-    q_0 = q_blank('main/uploads/sample.txt', 10)
+    q_0 = q_blank('../../main/uploads/sample.txt', 10)
     print(q_0)

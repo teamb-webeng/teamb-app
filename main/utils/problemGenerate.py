@@ -1,8 +1,13 @@
 import numpy as np
 import random
+import os
 
-article_list = np.load('main/uploads/article_list')
-words_theme = np.load('main/uploads/words_theme')
+# manage.pyならこっち
+# article_list = np.load('main/uploads/article_list'))
+# words_theme = np.load('main/uploads/words_theme'))
+
+article_list = np.load(os.path.join('./uploads/article_list'))
+words_theme = np.load(os.path.join('./uploads/words_theme'))
 
 '''
 To generate a problem, letting word at word_index to become a blank
