@@ -53,32 +53,34 @@ class Mypage extends Component {
   }
 
   onSubmitClick() {
-    const file = this.state.setFile
-    const reader = new FileReader();
-    reader.readAsText( file );
+    if (this.state.canSubmit) {
+      const file = this.state.setFile
+      const reader = new FileReader();
+      reader.readAsText( file );
 
-    let promise = new Promise((resolve, reject) => {
-      const waiter = setInterval(function() {
-        if (reader.readyState === 2) {
-          clearInterval(waiter);
-          $.ajax({
-            url: '/api/savefile',
-            type: 'GET',
-            data: {
-              data: reader.result,
-              name: file.name,
-            },
-          }).done(() => {
-            console.log('submit successful');
-            resolve()
-          });
-        }
-      }, 100);
-    })
+      let promise = new Promise((resolve, reject) => {
+        const waiter = setInterval(function() {
+          if (reader.readyState === 2) {
+            clearInterval(waiter);
+            $.ajax({
+              url: '/api/savefile',
+              type: 'GET',
+              data: {
+                data: reader.result,
+                name: file.name,
+              },
+            }).done(() => {
+              console.log('submit successful');
+              resolve()
+            });
+          }
+        }, 100);
+      })
 
-    promise.then(() =>{
-      this.routeToResult()
-    })
+      promise.then(() =>{
+        this.routeToResult()
+      })
+    }
   }
 
   routeToResult() {
