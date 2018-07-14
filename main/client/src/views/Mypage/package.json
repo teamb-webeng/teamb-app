@@ -1,0 +1,6 @@
+{
+  "name": "Mypage",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Mypage.js"
+}

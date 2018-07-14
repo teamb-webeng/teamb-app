@@ -3,6 +3,7 @@ import MeCab
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.decomposition import LatentDirichletAllocation
+import os
 
 
 def pre_processing(filename):
@@ -25,8 +26,11 @@ def pre_processing(filename):
     # return words*probability(for every theme)
     result = model.fit_transform(tf)
     result_ = np.argmax(result, axis=1)  # label all words with the label
-    np.array(op).dump('main/uploads/article_list')  # save article
-    np.array(result_).dump('main/uploads/words_theme')  # save theme
+    np.array(op).dump(os.path.join('./uploads/article_list')) # save article
+    np.array(result_).dump(os.path.join('./uploads/words_theme')) # save theme
+
+    # np.array(op).dump('main/uploads/article_list')  # save article
+    # np.array(result_).dump('main/uploads/words_theme')  # save theme
 
 
 if __name__ == "__main__":

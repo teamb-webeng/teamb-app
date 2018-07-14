@@ -49,3 +49,6 @@ def init_db():
     user = User("administrator", "admin@example.com", "admin")
     db.session.add(user)
     db.session.commit()
+
+if __name__ == "__main__":
+    init_db()
